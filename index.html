@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles/style.css" rel="stylesheet">
+    <title>GIFSEARCH USING GIPHY API</title>
+</head>
+<body>
+
+    <div class="container">
+        <form>
+            <label for="search-item"> Search A GIF </label>
+            <input type="text" id="search-item">
+            <input type="submit" id="submit" value="Search">
+        </form>
+        <img src="#" />
+    </div>
+    <script>
+        const img = document.querySelector('img');
+        const input = document.querySelector('#search-item');
+        const button = document.querySelector('#submit');
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=1JL5eyqpufgbBIh96EnviZvA278sI796&s=${input.value}`, {mode: 'cors'})
+              .then((response) => {
+              return response.json();
+            })
+              .then((response) => {
+              img.src = response.data.images.original.url;
+            })
+            .catch((error) => {
+              console.error('Error' , error);
+          });
+        });
+
+        fetch('https://api.giphy.com/v1/gifs/translate?api_key=1JL5eyqpufgbBIh96EnviZvA278sI796&s=cats', {mode: 'cors'})
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(response) {
+            img.src = response.data.images.original.url;
+          })
+    </script>
+</body>
+</html>
