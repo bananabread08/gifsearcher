@@ -20,29 +20,25 @@
     <script>
         const img = document.querySelector('img');
         const input = document.querySelector('#search-item');
-        const button = document.querySelector('#submit');
+        const form = document.querySelector('form');
 
-        button.addEventListener('click', (e) => {
+        const getGif = async (searchItem) => {
+          try {
+            const response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=1JL5eyqpufgbBIh96EnviZvA278sI796&s=${searchItem}`, {mode: 'cors'});
+            const gifData = await response.json();
+            img.src = gifData.data.images.original.url;
+          } catch (error){
+            console.log(error);
+          }
+        }
+        
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=1JL5eyqpufgbBIh96EnviZvA278sI796&s=${input.value}`, {mode: 'cors'})
-              .then((response) => {
-              return response.json();
-            })
-              .then((response) => {
-              img.src = response.data.images.original.url;
-            })
-            .catch((error) => {
-              console.error('Error' , error);
+            getGif(input.value);
+            form.reset();
           });
-        });
 
-        fetch('https://api.giphy.com/v1/gifs/translate?api_key=1JL5eyqpufgbBIh96EnviZvA278sI796&s=cats', {mode: 'cors'})
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(response) {
-            img.src = response.data.images.original.url;
-          })
+        getGif('cats');
     </script>
 </body>
 </html>
